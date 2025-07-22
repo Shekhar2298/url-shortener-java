@@ -1,0 +1,185 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>URL Shortener</title>
+    <style>
+        #copyBtn {
+          display: none;
+          margin-left: 10px;
+        }
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    margin: 0;
+    background: #f7f9fc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+
+form {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+input[type="url"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+#copyBtn {
+    margin-left: 10px;
+    background-color: #28a745;
+}
+
+#copyBtn:hover {
+    background-color: #218838;
+}
+
+
+.message {
+    margin-top: 10px;
+    color: green;
+    font-weight: bold;
+}
+
+
+label {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+
+@media screen and (max-width: 600px) {
+    form {
+        padding: 15px;
+    }
+
+    button,
+    #copyBtn {
+        width: 100%;
+        margin: 10px 0 0 0;
+    }
+
+    #copyBtn {
+        margin-left: 0;
+    }
+}
+
+    </style>
+</head>
+<body>
+<h1>Anonymous URL Shortener</h1>
+
+<form id="shorten-form">
+    <input type="url" id="longUrl" placeholder="Enter long URL" required style="width: 60%;" />
+    <button type="submit">Store</button>
+    <br /><br />
+
+    <label>
+        <input type="checkbox" id="shortenCheckbox" />
+        Shorten URL
+    </label>
+
+    <button type="button" id="copyBtn">Copy</button>
+    <div id="message" class="message"></div>
+</form>
+
+<script>
+    const longUrlInput = document.getElementById('longUrl');
+    const checkbox = document.getElementById('shortenCheckbox');
+    const copyBtn = document.getElementById('copyBtn');
+    const message = document.getElementById('message');
+
+    let originalUrl = ''; // to store original long URL
+
+    checkbox.addEventListener('change', async function () {
+      if (this.checked) {
+        // Save original
+        originalUrl = longUrlInput.value;
+        if (!originalUrl) {
+          alert("Please enter a URL first.");
+          this.checked = false;
+          return;
+        }
+
+        // Call your backend API to get short URL
+        try {
+          const response = await fetch('/shorten', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ longUrl: originalUrl })
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            const shortUrl = `${window.location.origin}/${data.shortUrl}`;
+            longUrlInput.value = shortUrl;
+            copyBtn.style.display = 'inline-block';
+
+            copyBtn.onclick = function () {
+              navigator.clipboard.writeText(shortUrl);
+              message.textContent = "Copied to clipboard!";
+            };
+          } else {
+            message.textContent = "Error: " + (data.error || 'Try again.');
+            this.checked = false;
+          }
+        } catch (err) {
+          console.error(err);
+          message.textContent = "Network error!";
+          this.checked = false;
+        }
+      } else {
+        // Revert to original
+        longUrlInput.value = originalUrl;
+        copyBtn.style.display = 'none';
+        message.textContent = '';
+      }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+:root {
+    --sap-primary: #0a6ed1;
+    --sap-hover: #0854a2;
+    --sap-error: #e52929;
+    --sap-success: #107e3e;
+    --sap-warning: #f0ab00;
+    --sap-bg: #f3f4f6;
+    --sap-font: "72", Arial, sans-serif;
+    --sap-border-radius: 6px;
+    --sap-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: var(--sap-font);
+    background-color: var(--sap-bg);
+    margin: 0;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h1 {
+    color: var(--sap-primary);
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+form {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: var(--sap-border-radius);
+    box-shadow: var(--sap-box-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    max-width: 420px;
+}
+
+input[type="url"],
+input[type="text"] {
+    font-size: 1rem;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: var(--sap-border-radius);
+    transition: all 0.2s ease-in-out;
+}
+
+input:focus {
+    border-color: var(--sap-primary);
+    box-shadow: 0 0 0 3px rgba(10, 110, 209, 0.2);
+    outline: none;
+}
+
+button[type="submit"],
+#copyBtn {
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.7rem;
+    border: none;
+    border-radius: var(--sap-border-radius);
+    background-color: var(--sap-primary);
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--sap-hover);
+}
+
+#copyBtn {
+    display: none;
+    margin-top: 0.5rem;
+}
+
+a {
+    margin-top: 1.2rem;
+    color: var(--sap-primary);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+small {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: -0.5rem;
+}
+
+.message {
+    font-size: 0.95rem;
+    padding: 0.7rem 1rem;
+    border-radius: var(--sap-border-radius);
+    display: none;
+    text-align: left;
+}
+
+.message.success {
+    background-color: #e5f8ee;
+    color: var(--sap-success);
+    border: 1px solid var(--sap-success);
+}
+
+.message.error {
+    background-color: #ffecec;
+    color: var(--sap-error);
+    border: 1px solid var(--sap-error);
+}
+
+.message.warning {
+    background-color: #fff8e5;
+    color: var(--sap-warning);
+    border: 1px solid var(--sap-warning);
+}
+
+@media (max-width: 480px) {
+    form {
+        padding: 1.2rem;
+        gap: 1rem;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    button[type="submit"],
+    #copyBtn {
+        padding: 0.6rem;
+    }
+}
